@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>AJ Money Tracker</title>
+    <link rel="icon" type="image/x-icon" href="wallet.png">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div class="app" id="app">
+
+        <div class="top">
+            <div class="left-controls">
+                <div class="wallet-row">
+                    <select id="walletSelect" onchange="changeWallet()"></select>
+                    <button class="btn" onclick="addWallet()">+ Add Wallet</button>
+                    <button class="btn ghost" onclick="openWalletManager()">Manage</button>
+                </div>
+                <input id="search" class="search" placeholder="Search transactions..." oninput="renderHistory()" />
+            </div>
+
+            <div class="right-controls controls">
+                <button class="btn ghost" onclick="toggleHideBalance()" id="hideBtn">Hide Balance</button>
+                <button class="btn ghost" onclick="toggleTheme()" id="themeBtn">Dark Mode</button>
+                <button class="btn" onclick="openSettings()">⚙ Settings</button>
+            </div>
+        </div>
+
+        <div class="grid">
+            <!-- LEFT: Wallet + Add transaction -->
+            <div class="panel">
+                <div class="balance-box">
+                    <h3 id="walletName">Wallet</h3>
+                    <p id="balance">₹0</p>
+                    <div class="small">Initial: <span id="initialBal">₹0</span></div>
+                </div>
+
+                <div class="trans-form">
+                    <div class="row">
+                        <input id="amount" type="number" placeholder="Amount">
+                        <select id="type">
+                            <option value="income">Income (+)</option>
+                            <option value="expense">Expense (-)</option>
+                        </select>
+                    </div>
+                    <input id="description" type="text" placeholder="Description">
+                    <div class="row">
+                        <select id="category">
+                            <option value="Salary">Salary</option>
+                            <option value="Food">Food</option>
+                            <option value="Bills">Bills</option>
+                            <option value="Shopping">Shopping</option>
+                            <option value="Transfer">Transfer</option>
+                            <option value="Other">Other</option>
+                        </select>
+                        <input id="txDate" type="date">
+                    </div>
+                    <textarea id="notes" placeholder="Notes (optional)"></textarea>
+                    <div class="row">
+                        <button class="btn" onclick="addTransaction()">Add Transaction</button>
+                        <button class="btn ghost" onclick="clearForm()">Clear</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- RIGHT: History, Filters, Chart, Settings -->
+            <div class="panel">
+                <div class="flex-between" style="margin-bottom:8px">
+                    <div class="controls">
+                        <label class="small">Filter:</label>
+                        <select id="filter" onchange="renderHistory()">
+                            <option value="all">All</option>
+                            <option value="income">Income</option>
+                            <option value="expense">Expense</option>
+                        </select>
+                        <label class="small">Sort:</label>
+                        <select id="sort" onchange="renderHistory()">
+                            <option value="newest">Newest</option>
+                            <option value="oldest">Oldest</option>
+                            <option value="amount_desc">Amount ↓</option>
+                            <option value="amount_asc">Amount ↑</option>
+                        </select>
+                    </div>
+                    <div class="controls">
+                        <button class="btn ghost" onclick="exportCSV()">Export CSV</button>
+                        <button class="btn ghost" onclick="exportJSON()">Export JSON</button>
+                        <button class="btn ghost" onclick="printReport()">Export → Print (PDF)</button>
+                    </div>
+                </div>
+
+                <div style="display:flex;gap:12px;align-items:center;margin-bottom:8px">
+                    <canvas id="chart" width="360" height="140"
+                        style="background:transparent;border-radius:8px"></canvas>
+                </div>
+
+                <div class="history" id="history"></div>
+
+                <div style="margin-top:10px;display:flex;gap:8px;flex-wrap:wrap;align-items:center">
+                    <button class="btn ghost" onclick="openWalletManager()">Wallets</button>
+                    <button class="btn ghost" onclick="openSettings()">Settings</button>
+                    <button class="btn warn" onclick="lockApp()">Lock App</button>
+                </div>
+
+                <div class="settings" id="advancedSettings" style="display:none"></div>
+            </div>
+        </div>
+
+        <footer>Built with ❤️ — Local only (data stored in your browser)</footer>
+    </div>
+
+    <!-- Modals + Hidden inputs -->
+    <div id="modalContainer" style="display:none"></div>
+
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="script.js"></script>
+
+
+</body>
+
+</html>
